@@ -9,7 +9,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'rename=files:rename_all_file_extensions', # command=package.module:function
+            'rename_extensions=files:rename_all_file_extensions', # command=package.module:function
         ],
     },
 )
