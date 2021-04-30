@@ -24,7 +24,6 @@ def rename_all_file_extensions(recursive, directory_path, old_extension, new_ext
         files = os.listdir(directory_path)
 
     elif recursive:
-        # snippet from https://thispointer.com/python-how-to-get-list-of-files-in-directory-and-sub-directories/
         files = []
         for (dirpath, _, filenames) in os.walk(directory_path):
             files += [os.path.join(dirpath, file_) for file_ in filenames]
@@ -43,12 +42,11 @@ def rename_all_file_extensions(recursive, directory_path, old_extension, new_ext
     print(f'The following files will be renamed')
     pprint.pprint(files_to_be_renamed)
 
-    # snippet from https://gist.github.com/garrettdreyfus/8153571
     if not input("Do you want to proceed? (y/n): ").lower().strip()[:1] == "y": sys.exit(1)
 
 
     for elt in files_to_be_renamed:
-        os.rename(elt[0], elt[1])
+        os.rename(f'{directory_path}/{elt[0]}', f'{directory_path}/{elt[1]}')
     print('Renaming over!')
 
 
