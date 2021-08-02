@@ -32,9 +32,9 @@ def rename_all_file_extensions(recursive, directory_path, old_extension, new_ext
     files_to_be_renamed = []
     for elt in files:
         try:
-            filename, extension = elt.split(".")
-            if extension == old_extension:
-                new_filename = f'{filename}.{new_extension}'
+            file, extension = os.path.splitext(elt)
+            if extension == f'.{old_extension}':
+                new_filename = f'{file}.{new_extension}'
                 files_to_be_renamed.append((elt, new_filename))
 
         except ValueError:  # not a correct filename
@@ -60,11 +60,15 @@ def rename_ableton_freeze_samples(directory_path):
     files_to_be_renamed = []
     for elt in files:
         try:
-            file, extension = elt.split(".")
-            if extension == 'wav':
-                file = file.split('Freeze')[1].split('[')[0].strip()
-                new_filename = f'{file}.wav'
-                files_to_be_renamed.append((elt, new_filename))
+            file, extension = os.path.splitext(elt)
+            if extension == '.wav':
+                try:
+                    file = file.split('Freeze')[1].split('[')[0].strip()
+                    new_filename = f'{file}{extension}'
+                    files_to_be_renamed.append((elt, new_filename))
+
+                except IndexError:  # not a correct Ableton frozen filename
+                    pass
 
         except ValueError:  # not a correct filename
             pass
