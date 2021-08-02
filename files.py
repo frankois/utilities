@@ -9,6 +9,7 @@ import os
 import pprint
 import sys
 
+
 @click.command()
 @click.option('-R', '--recursive', is_flag=True, default=False)
 @click.argument('directory_path', default="directory")
@@ -44,7 +45,34 @@ def rename_all_file_extensions(recursive, directory_path, old_extension, new_ext
 
     if not input("Do you want to proceed? (y/n): ").lower().strip()[:1] == "y": sys.exit(1)
 
+    for elt in files_to_be_renamed:
+        os.rename(f'{directory_path}/{elt[0]}', f'{directory_path}/{elt[1]}')
+    print('Renaming over!')
 
+
+@click.command()
+@click.argument('directory_path', default="directory")
+def rename_ableton_freeze_samples(directory_path):
+    """Rename Ableton freezed samples so it keeps only the original track name."""
+
+    files = os.listdir(directory_path)
+
+    files_to_be_renamed = []
+    for elt in files:
+        try:
+            file, extension = elt.split(".")
+            if extension == 'wav':
+                file = file.split('Freeze')[1].split('[')[0].strip()
+                new_filename = f'{file}.wav'
+                files_to_be_renamed.append((elt, new_filename))
+
+        except ValueError:  # not a correct filename
+            pass
+
+    print(f'The following files will be renamed')
+    pprint.pprint(files_to_be_renamed)
+
+    if not input("Do you want to proceed? (y/n): ").lower().strip()[:1] == "y": sys.exit(1)
     for elt in files_to_be_renamed:
         os.rename(f'{directory_path}/{elt[0]}', f'{directory_path}/{elt[1]}')
     print('Renaming over!')
